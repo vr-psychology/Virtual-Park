@@ -1,5 +1,7 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-  <meta charset="utf-8" />
+<html>
+
+<head>
+  <meta charset="utf-8">
   <title>BGSU Psychology Experiment: Test 1</title>
 
   <!-- A-Frame Components -->
@@ -21,7 +23,7 @@
     
 </head>
 
-<body class="a-body ">
+<body>
   <script>
     AFRAME.registerReducer('app', {
         initialState: {
@@ -58,30 +60,28 @@
           el.addEventListener('click', function () {
           el.sceneEl.emit(AFRAME.log('You found your phone!'));
           el.sceneEl.emit('savescore');
-          el.sceneEl.emit(AFRAME.log('Press Esc key to return your mouse to normal'));
           });
         }
       });
   </script>
 
-  <a-scene main="" physics="debug: false">
+  <a-scene main physics="debug: false">
 
   <!--Player Controls-->
-  <a-entity camera="userHeight:2" universal-controls="" kinematic-body="" position="0 1.0435839111111114 0" velocity="" gamepad-controls="" keyboard-controls="" touch-controls="" hmd-controls="" mouse-controls="" data-aframe-inspector-original-camera="">
-  <a-entity cursor="" geometry="primitive:ring;radiusInner:0.001;radiusOuter:0.0015" material="color:#FFFFFF" position="0 0 -0.1" raycaster=""></a-entity>
+  <a-entity camera="userHeight:1.5" universal-controls kinematic-body>
+  <a-entity cursor
+            geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.0015"
+            material="color: #FFFFFF"
+            position="0 0 -0.1"></a-entity>
 
-  <a-entity log="" geometry="primitive:plane" material="color:#E88B39" text="value:Test 1
-Move using the arrow keys.
-Look using the mouse.
-You need to find your black smartphone.
-When you find it, click on it.;color:#4F2C1D" scale="0.75 0.75 1" position="-1.25 0.5 -1">
+  <a-entity log geometry="primitive: plane" material="color: #E88B39" text="color: #4F2C1D" scale="0.75 0.75 1" position="-1.25 0.5 -1">
  </a-entity>
 
-  <a-entity bind__text="[object Object]" text="value:0;color:#4F2C1D;align:center" geometry="primitive:plane" material="color:#E88B39" scale="0.75 0.75 1" position="1.25 0.5 -1"></a-entity>
+  <a-entity bind__text="value: app.saved_score" text="value: 0; color: #4F2C1D; align: center;" geometry="primitive: plane" material="color: #E88B39" scale="0.75 0.75 1" position="1.25 0.5 -1"></a-entity>
       
   </a-entity>
 
-  <!-- Cell Phone-->
+<!-- Cell Phone-->
   <a-box phone-found="" scale="0.5 0.01 0.2" position="16 -0.49 14" color="#000000" flatshading="true"></a-box>
       
   <script>
@@ -308,6 +308,6 @@ When you find it, click on it.;color:#4F2C1D" scale="0.75 0.75 1" position="-1.2
   
   
 </a-scene>
+</body>
 
-
-</body></html>
+</html>
