@@ -1,0 +1,298 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>BGSU Psychology Experiment: Test 1</title>
+
+  <!-- A-Frame Components -->
+
+  <!-- Main Engine -->
+  <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+
+  <!-- Event System -->
+  <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+
+  <!-- Kinematic-body -->
+  <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.3/dist/aframe-extras.min.js"></script>
+
+  <!-- Log System -->
+  <script src="https://unpkg.com/aframe-log-component@1.0.7/dist/aframe-log-component.min.js"></script>
+
+  <!-- States -->
+  <script src="https://unpkg.com/aframe-state-component@1.8.0/dist/aframe-state-component.min.js"></script>
+    
+</head>
+
+<body>
+  <script>
+    AFRAME.registerReducer('app', {
+        initialState: {
+        score: 0,
+        saved_score: 0
+        },
+
+        handlers: {
+            recordscore: function (state, action) {
+            state.score = action.points;
+            return state;
+        },
+            savescore: function (state) {
+            state.saved_score = state.score;
+            return state;
+      }
+     }
+    });
+  </script>
+    
+  <script>
+    AFRAME.registerComponent('main', {
+        tick: function (t) {
+          var el = this.el;
+          el.sceneEl.emit('recordscore', {points: t});
+        }
+      });
+  </script>
+    
+  <script>
+      AFRAME.registerComponent('phone-found', {
+        init: function () {
+          var el = this.el;
+          el.addEventListener('click', function () {
+          el.sceneEl.emit(AFRAME.log('You found your phone!'));
+          el.sceneEl.emit('savescore');
+          });
+        }
+      });
+  </script>
+
+  <a-scene main physics="debug: false">
+
+  <!--Player Controls-->
+  <a-entity camera="userHeight:1.5" universal-controls kinematic-body>
+  <a-entity cursor
+            geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.0015"
+            material="color: #FFFFFF"
+            position="0 0 -0.1"></a-entity>
+
+  <a-entity log geometry="primitive: plane" material="color: #E88B39" text="color: #4F2C1D" scale="0.75 0.75 1" position="-1.25 0.5 -1">
+ </a-entity>
+
+  <a-entity bind__text="value: app.saved_score" text="value: 0; color: #4F2C1D; align: center;" geometry="primitive: plane" material="color: #E88B39" scale="0.75 0.75 1" position="1.25 0.5 -1"></a-entity>
+      
+  </a-entity>
+
+  <!-- Cell Phone-->
+  <a-box phone-found scale="0.5 0.01 0.2" position="16 -0.49 14" color="#000000" flatShading="true"></a-box>
+      
+  <script>
+    AFRAME.log('Test 1')
+    AFRAME.log('Move using the arrow keys.')
+    AFRAME.log('Look using the mouse.')
+    AFRAME.log('You need to find your black smartphone.')
+    AFRAME.log('When you find it, click on it.')
+  </script>
+
+  <!-- Floor -->
+  <a-box static-body scale="50 1 50" depth="1" position="0 -1 0" color="#CAFF73" flatShading="true"></a-box>
+  <!-- Hedge Barrier -->
+  <a-box static-body scale="1 3 50" position="25 -1 0"  color="#77E847" flatShading="true"></a-box>
+  <a-box static-body scale="50 3 1" position="0 -1 25"  color="#77E847" flatShading="true"></a-box>
+  <a-box static-body scale="1 3 50" position="-25 -1 0" color="#77E847" flatShading="true"></a-box>
+  <a-box static-body scale="50 3 1" position="0 -1 -25" color="#77E847" flatShading="true"></a-box>
+
+  <!--Building-->
+  <a-entity>
+  <a-box static-body scale="8 5 1" position="0 2 -15" color="#4F2C1D" flatShading="true"></a-box>
+  <a-box static-body scale="2 5 1" position="2.5 2 -10" color="#4F2C1D" flatShading="true"></a-box>
+  <a-box static-body scale="2 5 1" position="-2.5 2 -10" color="#4F2C1D" flatShading="true"></a-box>
+  <a-box static-body scale="1 5 4" position="-3 2 -12.5" color="#4F2C1D" flatShading="true"></a-box>
+  <a-box static-body scale="1 5 4" position="3 2 -12.5" color="#4F2C1D" flatShading="true"></a-box>
+  <a-box static-body scale="5 1 5" position="0 4 -12" color="#4F2C1D" flatShading="true"></a-box>
+  </a-entity>
+
+  <!--Building Sign-->
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="1 1 0.1" position="-3 1 -9" color="#E88B39" flatShading="true"></a-cylinder>
+  <a-cylinder scale="0.1 1 0.1" position="-3 0 -9" color="#E88B39" flatShading="true"></a-cylinder>
+  <a-entity text="value:Park Shelter;align:center" position="-3 1 -8.9" scale="4 4 1"></a-entity>
+  </a-entity>
+
+  <!--Picnic Table-->
+  <a-entity>
+  <a-cylinder static-body scale="1 0.1 1" position="-19 0.5 -17" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-cylinder scale="0.1 2 0.1" position="-19 -0.5 -17" color="#4F2C1D" flatShading="true"></a-cylinder>
+  </a-entity>
+
+  <!--Stool-->
+  <a-cylinder scale="0.5 1 0.5" position="-19 -0.5 -15" color="#4F2C1D" flatshading="true"></a-cylinder>
+  <a-cylinder scale="0.5 1 0.5" position="-19 -0.5 -19" color="#4F2C1D" flatshading="true"></a-cylinder>
+  <a-cylinder scale="0.5 1 0.5" position="-20.5 -0.5 -17" color="#4F2C1D" flatshading="true"></a-cylinder>
+  <a-cylinder scale="0.5 1 0.5" position="-18 -0.5 -17" color="#4F2C1D" flatshading="true"></a-cylinder>
+
+  <!--Cherry Trees-->
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-14 -0.5 -18" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-14 6 -18" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-16 -0.5 -13" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-16 6 -13" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-9 -0.5 -9" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-9 6 -9" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="14 -0.5 -19" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="14 6 -19" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="16 -0.5 -14" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="16 6 -14" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="9 -0.5 -8" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="9 6 -8" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-14 -0.5 18" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-14 6 18" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-16 -0.5 13" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-16 6 13" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-9 -0.5 9" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-9 6 9" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-14 -0.5 -5" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-14 6 -5" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity><!--Ö���@��@ԁ�����@ׁ��@������%-->
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-16 -0.5 4" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-16 6 4" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-9 -0.5 0" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-9 6 0" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="17 -0.5 0" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="17 6 0" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="14 -0.5 -5" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="14 6 -5" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="10 -0.5 0" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="10 6 0" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-10 -0.5 6" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-10 6 6" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="20 -0.5 6" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="20 6 6" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="21 -0.5 15" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="21 6 15" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="0 -0.5 20" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="0 6 20" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="5 -0.5 17" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="5 6 17" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-6 -0.5 19" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-6 6 19" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-10 -0.5 22" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-10 6 22" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="0 -0.5 15" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="0 6 15" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="5 -0.5 13" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="5 6 13" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="-6 -0.5 7" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="-6 6 7" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="0.5 9 0.5" position="15 -0.5 20" color="#4F2C1D" flatShading="true"></a-cylinder>
+  <a-sphere scale="4 4 4" position="15 6 20" color="#FF52CE" flatShading="true"></a-sphere>
+  </a-entity>
+
+  <!--Picnic Sign-->
+  <a-entity>
+  <a-cylinder static-body="shape: box;" scale="1 1 0.1" position="-13 1 -9" color="#E88B39" flatShading="true" rotation="0 45 0"></a-cylinder>
+  <a-cylinder scale="0.1 2 0.1" position="-13 -0.5 -9" color="#E88B39" flatShading="true"></a-cylinder>
+  <a-entity text="value:Picnic Area;align:center" position="-12.9 1 -8.7" scale="4 4 1" rotation="0 45 0"></a-entity>
+  </a-entity>
+
+  <!--Pond-->
+  <a-entity>
+  <a-cylinder scale="5 1 5" position="8 -0.5 8.5" color="#608CFF" flatshading="true"></a-cylinder>
+  <a-box static-body scale="8 5 8" position="8 -0.5 8.5" visible="false"></a-box>
+  <a-box static-body scale="1 2 2" position="13 0 9" color="#BEBEBE" flatshading="true" rotation="27 23 41"></a-box>
+  <a-box static-body scale="1 2 2" position="13 0 7" color="#BEBEBE" flatshading="true" rotation="65 -161 130"></a-box>
+  <a-box static-body scale="1 2 2" position="13 0 10" color="#BEBEBE" flatshading="true" rotation="7.5 156 114"></a-box>
+  <a-box static-body scale="1 2 4.5" position="11 -0.5 5" color="#BEBEBE" flatshading="true" rotation="7.5 -141.5 114"></a-box>
+  <a-box static-body scale="1 2 2" position="10 -0.5 4" color="#BEBEBE" flatshading="true" rotation="39 -180 33.5"></a-box>
+  <a-box static-body scale="1 2 2" position="8.5 -0.5 3" color="#BEBEBE" flatshading="true" rotation="39 108 33.5"></a-box>
+  <a-box static-body scale="1 2 2" position="7 -0.5 3.5" color="#BEBEBE" flatshading="true" rotation="39 142 33.5"></a-box>
+  <a-box static-body scale="1 2 2" position="5 -0.5 4" color="#BEBEBE" flatshading="true" rotation="40.5 120.5 -13"></a-box>
+  <a-box static-body scale="1 2 2" position="4 -0.3 5.4" color="#BEBEBE" flatshading="true" rotation="28.5 175 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="3 -0.3 7.5" color="#BEBEBE" flatshading="true" rotation="28.5 175 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="3 -0.3 10" color="#BEBEBE" flatshading="true" rotation="28.5 -152 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="4.2 -0.3 12" color="#BEBEBE" flatshading="true" rotation="28.5 -126 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="5.6 -0.3 12.5" color="#BEBEBE" flatshading="true" rotation="28.5 82.5 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="8 -0.3 13.5" color="#BEBEBE" flatshading="true" rotation="28.5 102.5 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="10 -0.3 13" color="#BEBEBE" flatshading="true" rotation="28.5 -45 -147"></a-box>
+  <a-box static-body scale="1 2 2" position="12 -0.3 12" color="#BEBEBE" flatshading="true" rotation="28.5 175 -147"></a-box>
+  </a-entity>
+
+  <!--Sky-->
+  <a-sky color="#0DEFFF"></a-sky>
+
+  </a-scene>
+</body>
+
+</html>
